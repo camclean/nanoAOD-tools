@@ -112,7 +112,15 @@ class PostProcessor :
                 if self.friend:
                     outTree = FriendOutput(inFile, inTree, outFile)
                 else:
-                    outTree = FullOutput(inFile, inTree, outFile, branchSelection = self.branchsel, fullClone = fullClone, jsonFilter = jsonFilter,provenance=self.provenance)
+                    outTree = FullOutput(
+                        inFile,
+                        inTree,
+                        outFile,
+                        branchSelection=self.branchsel,
+                        outputbranchSelection=self.outputbranchsel,
+                        fullClone=fullClone,
+                        jsonFilter=jsonFilter,
+                        provenance=self.provenance)
             else : 
                 outFile = None
                 outTree = None
@@ -122,11 +130,10 @@ class PostProcessor :
 		(nall, npass, timeLoop) = eventLoop(self.modules, inFile, outFile, inTree, outTree)
 		print 'Processed %d preselected entries from %s (%s entries). Finally selected %d entries' % (nall, fname, inTree.GetEntries(), npass)
 	    else:
+                nall = inTree.GetEntries()
 		print 'Selected %d entries from %s' % (outTree.tree().GetEntries(), fname)
 
 	    # now write the output
-            if self.outputbranchsel:
-                self.outputbranchsel.selectBranches(outTree._tree)
             if not self.noOut: 
                 outTree.write()
                 outFile.Close()
