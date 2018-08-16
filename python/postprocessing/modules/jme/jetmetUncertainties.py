@@ -274,6 +274,13 @@ class jetmetUncertaintiesProducer(Module):
                 self.jesUncertainty[jesUncertainty].setJetPt(jet_pt_nom)
                 self.jesUncertainty[jesUncertainty].setJetEta(jet.eta)
                 delta = self.jesUncertainty[jesUncertainty].getUncertainty(True)
+                # print ""
+                # print "******"
+                # print ("Jet pt: %s" % (jet_pt_nom))
+                # print ("Jet eta: %s" % (jet.eta))
+                # print ("%s pt shift: %s" % (jesUncertainty,delta))
+                # print "******"
+                # print ""
                 jet_pt_jesUp[jesUncertainty]   = jet_pt_nom*(1. + delta)
                 jet_pt_jesDown[jesUncertainty] = jet_pt_nom*(1. - delta)
                 jets_pt_jesUp[jesUncertainty].append(jet_pt_jesUp[jesUncertainty])
@@ -330,9 +337,7 @@ class jetmetUncertaintiesProducer(Module):
             met_px_unclEnDown  = met_px_unclEnDown + (met_px_nom - met_px)
             met_py_unclEnDown  = met_py_unclEnDown + (met_py_nom - met_py)
 
-
-
-            
+           
         self.out.fillBranch("%s_pt_nom" % self.jetBranchName, jets_pt_nom)
         self.out.fillBranch("%s_pt_jerUp" % self.jetBranchName, jets_pt_jerUp)
         self.out.fillBranch("%s_pt_jerDown" % self.jetBranchName, jets_pt_jerDown)
@@ -433,10 +438,6 @@ jesUncertaintySources = [
     "FlavorPureQuark",
     "FlavorPureCharm",
     "FlavorPureBottom",
-    "TimeRunBCD",
-    "TimeRunEF",
-    "TimeRunG",
-    "TimeRunH",
     "CorrelationGroupMPFInSitu",
     "CorrelationGroupIntercalibration",
     "CorrelationGroupbJES",
@@ -444,19 +445,59 @@ jesUncertaintySources = [
     "CorrelationGroupUncorrelated",
 ]
 
-# define modules using the syntax 'name = lambda : constructor' to avoid having them loaded when not needed
+#specific to 2016
+jesUncertaintySources2016 = [
+    "TimeRunBCD",
+    "TimeRunEF",
+    "TimeRunG",
+    "TimeRunH",
+]
+jesUncertaintySources2016.extend(jesUncertaintySources)
 
-jetmetUncertainties2016 = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ])
-jetmetUncertainties2016All = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources)
-jetmetUncertainties2017 = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ])
-jetmetUncertainties2017All = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources)
+#specific to 2017
+jesUncertaintySources2017 = [
+    "RelativeSample",
+    "TimeRunB",
+    "TimeRunC",
+    "TimeRunD",
+    "TimeRunE",
+    "TimeRunF",
+]
+jesUncertaintySources2017.extend(jesUncertaintySources)
 
-jetmetUncertainties2016AK4Puppi = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK4PFPuppi")
-jetmetUncertainties2016AK4PuppiAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources, jetType="AK4PFPuppi")
-jetmetUncertainties2017AK4Puppi = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK4PFPuppi")
-jetmetUncertainties2017AK4PuppiAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources, jetType="AK4PFPuppi")
+####### define modules using the syntax 'name = lambda : constructor' to avoid having them loaded when not needed ######
+#AK4 PF jets
+jetmetUncertainties2016AK4PF = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK4PF")
+jetmetUncertainties2016AK4PFAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources2016, jetType="AK4PF")
+jetmetUncertainties2017AK4PF = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK4PF")
+jetmetUncertainties2017AK4PFAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources2017, jetType="AK4PF")
 
-jetmetUncertainties2016AK8Puppi = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK8PFPuppi")
-jetmetUncertainties2016AK8PuppiAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources, jetType="AK8PFPuppi")
-jetmetUncertainties2017AK8Puppi = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK8PFPuppi")
-jetmetUncertainties2017AK8PuppiAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources, jetType="AK8PFPuppi")
+#AK8 PF jets
+jetmetUncertainties2016AK8PF = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK8PF")
+jetmetUncertainties2016AK8PFAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources2016, jetType="AK8PF")
+jetmetUncertainties2017AK8PF = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK8PF")
+jetmetUncertainties2017AK8PFAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources2017, jetType="AK8PF")
+
+#AK4 PF CHS jets
+jetmetUncertainties2016AK4PFchs = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK4PFchs")
+jetmetUncertainties2016AK4PFchsAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources2016, jetType="AK4PFchs")
+jetmetUncertainties2017AK4PFchs = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK4PFchs")
+jetmetUncertainties2017AK4PFchsAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources2017, jetType="AK4PFchs")
+
+#AK8 PF CHS jets
+jetmetUncertainties2016AK8PFchs = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK8PFchs")
+jetmetUncertainties2016AK8PFchsAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources2016, jetType="AK8PFchs")
+jetmetUncertainties2017AK8PFchs = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK8PFchs")
+jetmetUncertainties2017AK8PFchsAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources2017, jetType="AK8PFchs")
+
+#AK4 PF PUPPI jets
+jetmetUncertainties2016AK4PFPuppi = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK4PFPuppi")
+jetmetUncertainties2016AK4PFPuppiAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources2016, jetType="AK4PFPuppi")
+jetmetUncertainties2017AK4PFPuppi = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK4PFPuppi")
+jetmetUncertainties2017AK4PFPuppiAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources2017, jetType="AK4PFPuppi")
+
+#AK8 PF PUPPI jets
+jetmetUncertainties2016AK8PFPuppi = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", [ "Total" ], jetType="AK8PFPuppi")
+jetmetUncertainties2016AK8PFPuppiAll = lambda : jetmetUncertaintiesProducer("2016", "Summer16_23Sep2016V4_MC", jesUncertaintySources2016, jetType="AK8PFPuppi")
+jetmetUncertainties2017AK8PFPuppi = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", [ "Total" ], jetType="AK8PFPuppi")
+jetmetUncertainties2017AK8PFPuppiAll = lambda : jetmetUncertaintiesProducer("2017", "Fall17_17Nov2017_V6_MC", jesUncertaintySources2017, jetType="AK8PFPuppi")
