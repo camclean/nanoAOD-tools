@@ -24,10 +24,10 @@ class pdfWeightProducer(Module):
     def analyze(self, event):
         """process event, return True (go to next module) or False (fail, go to next event)"""
 
-        if hasattr(event,"LHEPdfWeight"):
-            pdfWeightUp = 1.
-            pdfWeightDown = 1.
+        pdfWeightUp = -99.
+        pdfWeightDown = -99.
 
+        if hasattr(event,"LHEPdfWeight"):
             self.pdfWeightList = [  i for i in event.LHEPdfWeight ]
 
             if len(self.pdfWeightList) > 1:
@@ -35,9 +35,7 @@ class pdfWeightProducer(Module):
                 pdfWeightUp = 1. + abs(w)
                 pdfWeightDown = 1. - abs(w)
 
-            self.out.fillBranch("LHEPdfWeightUp", pdfWeightUp)
-            self.out.fillBranch("LHEPdfWeightDown", pdfWeightDown)
+        self.out.fillBranch("LHEPdfWeightUp", pdfWeightUp)
+        self.out.fillBranch("LHEPdfWeightDown", pdfWeightDown)
             
-            return True
-
-        else: return False
+        return True
