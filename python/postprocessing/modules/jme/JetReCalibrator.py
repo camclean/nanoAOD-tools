@@ -61,6 +61,7 @@ class JetReCalibrator:
     def getCorrection(self,jet,rho,delta=0,corrector=None):
         if not corrector: corrector = self.JetCorrector
         if corrector != self.JetCorrector and delta!=0: raise RuntimeError('Configuration not supported')
+        corrector.setJetPhi(jet.phi)
         corrector.setJetEta(jet.eta)
         corrector.setJetPt(jet.pt*(1.-jet.rawFactor))
         corrector.setJetA(jet.area)
