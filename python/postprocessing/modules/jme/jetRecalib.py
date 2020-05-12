@@ -25,7 +25,7 @@ class jetRecalib(Module):
 
         self.jesInputArchivePath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/"
         # Text files are now tarred so must extract first into temporary directory (gets deleted during python memory management at script exit)
-        self.jesArchive = tarfile.open(self.jesInputArchivePath+archive+".tgz", "r:gz")
+        self.jesArchive = tarfile.open(self.jesInputArchivePath+archive+".tgz", "r:*")
         self.jesInputFilePath = tempfile.mkdtemp()
         self.jesArchive.extractall(self.jesInputFilePath)
 
@@ -171,12 +171,12 @@ jetRecalib2017CAK8Puppi = lambda : jetRecalib("Fall17_17Nov2017C_V32_DATA","Fall
 jetRecalib2017DEAK8Puppi = lambda : jetRecalib("Fall17_17Nov2017DE_V32_DATA","Fall17_17Nov2017_V32_DATA", jetType="AK8PFPuppi")
 jetRecalib2017FAK8Puppi = lambda : jetRecalib("Fall17_17Nov2017F_V32_DATA","Fall17_17Nov2017_V32_DATA",jetType="AK8PFPuppi")
 
-jetRecalib2018A = lambda : jetRecalib("Autumn18_RunA_V8_DATA","Autumn18_V8_DATA",redoJEC = True)
-jetRecalib2018B = lambda : jetRecalib("Autumn18_RunB_V8_DATA","Autumn18_V8_DATA",redoJEC = True)
-jetRecalib2018C = lambda : jetRecalib("Autumn18_RunC_V8_DATA","Autumn18_V8_DATA",redoJEC = True)
-jetRecalib2018D = lambda : jetRecalib("Autumn18_RunD_V8_DATA","Autumn18_V8_DATA",redoJEC = True)
+jetRecalib2018A = lambda : jetRecalib("Autumn18_RunA_V19_DATA","Autumn18_RunA_V19_DATA",redoJEC = True)
+jetRecalib2018B = lambda : jetRecalib("Autumn18_RunB_V19_DATA","Autumn18_RunB_V19_DATA",redoJEC = True)
+jetRecalib2018C = lambda : jetRecalib("Autumn18_RunC_V19_DATA","Autumn18_RunC_V19_DATA",redoJEC = True)
+jetRecalib2018D = lambda : jetRecalib("Autumn18_RunD_V19_DATA","Autumn18_RunD_V19_DATA",redoJEC = True)
 
-jetRecalib2018AAK8Puppi = lambda : jetRecalib("Autumn18_RunA_V8_DATA","Autumn18_V8_DATA",jetType="AK8PFPuppi",redoJEC = True)
-jetRecalib2018BAK8Puppi = lambda : jetRecalib("Autumn18_RunB_V8_DATA","Autumn18_V8_DATA",jetType="AK8PFPuppi",redoJEC = True)
-jetRecalib2018CAK8Puppi = lambda : jetRecalib("Autumn18_RunC_V8_DATA","Autumn18_V8_DATA",jetType="AK8PFPuppi",redoJEC = True)
-jetRecalib2018DAK8Puppi = lambda : jetRecalib("Autumn18_RunD_V8_DATA","Autumn18_V8_DATA",jetType="AK8PFPuppi",redoJEC = True)
+jetRecalib2018AAK8Puppi = lambda : jetRecalib("Autumn18_RunA_V19_DATA","Autumn18_RunA_V19_DATA",jetType="AK8PFPuppi",redoJEC = True)
+jetRecalib2018BAK8Puppi = lambda : jetRecalib("Autumn18_RunB_V19_DATA","Autumn18_RunB_V19_DATA",jetType="AK8PFPuppi",redoJEC = True)
+jetRecalib2018CAK8Puppi = lambda : jetRecalib("Autumn18_RunC_V19_DATA","Autumn18_RunC_V19_DATA",jetType="AK8PFPuppi",redoJEC = True)
+jetRecalib2018DAK8Puppi = lambda : jetRecalib("Autumn18_RunD_V19_DATA","Autumn18_RunD_V19_DATA",jetType="AK8PFPuppi",redoJEC = True)

@@ -20,7 +20,11 @@ class jetSmearer(Module):
         # Text files are now tarred so must extract first
         self.jerInputArchivePath = os.environ['CMSSW_BASE'] + "/src/PhysicsTools/NanoAODTools/data/jme/"
         self.jerTag = jerInputFileName[:jerInputFileName.find('_MC_')+len('_MC')]
-        self.jerArchive = tarfile.open(self.jerInputArchivePath+self.jerTag+".tgz", "r:gz")
+        print "JER tag: %s" % self.jerTag
+        try: 
+            self.jerArchive = tarfile.open(self.jerInputArchivePath+self.jerTag+".tgz", "r:gz")
+        except:
+            self.jerArchive = tarfile.open(self.jerInputArchivePath+self.jerTag+".tar.gz", "r:gz")
         self.jerInputFilePath = tempfile.mkdtemp()
         self.jerArchive.extractall(self.jerInputFilePath)
         self.jerInputFileName = jerInputFileName
@@ -49,6 +53,10 @@ class jetSmearer(Module):
 
         # initialize JER scale factors and uncertainties
         # (cf. PhysicsTools/PatUtils/interface/SmearedJetProducerT.h )
+        secondaryJERinputFilePath = os.path.join(self.jerInputFilePath,self.jerTag)
+        print "Try path: %s" % secondaryJERinputFilePath
+        if os.path.exists(secondaryJERinputFilePath):
+            self.jerInputFilePath = secondaryJERinputFilePath
         print("Loading jet energy resolutions (JER) from file '%s'" % os.path.join(self.jerInputFilePath, self.jerInputFileName))
         self.jer = ROOT.PyJetResolutionWrapper(os.path.join(self.jerInputFilePath, self.jerInputFileName))
         print("Loading JER scale factors and uncertainties from file '%s'" % os.path.join(self.jerInputFilePath, self.jerUncertaintyInputFileName))
@@ -102,6 +110,7 @@ class jetSmearer(Module):
         jet_pt_sf_and_uncertainty = {}
         for enum_central_or_shift in [ enum_nominal, enum_shift_up, enum_shift_down ]:
             self.params_sf_and_uncertainty.setJetEta(jet.Eta())
+            self.params_sf_and_uncertainty.setJetPt(jet.Pt())
             jet_pt_sf_and_uncertainty[enum_central_or_shift] = self.jerSF_and_Uncertainty.getScaleFactor(self.params_sf_and_uncertainty, enum_central_or_shift)
 
         smear_vals = {}
@@ -163,7 +172,7 @@ class jetSmearer(Module):
         #--------------------------------------------------------------------------------------------
 
         if not (jet.M() > 0.):
-            print("WARNING: jet m = %1.1f !!" % jet.M())
+            #print("WARNING: jet m = %1.1f !!" % jet.M())
             return ( jet.M(), jet.M(), jet.M() )
         
         #--------------------------------------------------------------------------------------------
